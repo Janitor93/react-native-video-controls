@@ -12,7 +12,8 @@ import {
     Easing,
     Image,
     View,
-    Text
+    Text,
+    Dimensions,
 } from 'react-native';
 import _ from 'lodash';
 
@@ -902,6 +903,13 @@ export default class VideoPlayer extends Component {
      * Render the volume slider and attach the pan handlers
      */
     renderVolume() {
+        // custom change
+        const handleSize = {
+            padding: 24,
+            marginTop: -32,
+            marginLeft: -32,
+            backgroundColor: 'rgba(0, 0, 0, 0)',
+        };
 
         return (
             <View style={ styles.volume.container }>
@@ -916,7 +924,8 @@ export default class VideoPlayer extends Component {
                 <View
                     style={[
                         styles.volume.handle,
-                        { left: this.state.volumePosition }
+                        { left: this.state.volumePosition },
+                        handleSize,
                     ]}
                     { ...this.player.volumePanResponder.panHandlers }
                 >
@@ -979,6 +988,27 @@ export default class VideoPlayer extends Component {
      * Render the seekbar and attach its handlers
      */
     renderSeekbar() {
+        // custom change
+        
+        const { height, width } = Dimensions.get('window');
+        const maxLength = height > width ? height : width;
+        let circleSize = {
+            borderRadius: 12,
+            position: 'relative',
+            top: 8, left: 8,
+            height: 12,
+            width: 12,
+        };
+
+        if (maxLength < 600 || maxLength > 900) {
+            circleSize = {
+                borderRadius: 24,
+                position: 'relative',
+                top: 4, left: 4,
+                height: 24,
+                width: 24,
+            };
+        }
 
         return (
             <View style={ styles.seekbar.container }>
@@ -1002,7 +1032,7 @@ export default class VideoPlayer extends Component {
                     { ...this.player.seekPanResponder.panHandlers }
                 >
                     <View style={[
-                        styles.seekbar.circle,
+                        circleSize,
                         { backgroundColor: this.props.seekColor || '#FFF' } ]}
                     />
                 </View>
