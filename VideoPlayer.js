@@ -148,6 +148,13 @@ export default class VideoPlayer extends Component {
             videoStyle: this.props.videoStyle || {},
             containerStyle: this.props.style || {}
         };
+
+        const { height, width } = Dimensions.get('window');
+
+        this.screen = {
+            height,
+            width,
+        };
     }
 
 
@@ -990,8 +997,6 @@ export default class VideoPlayer extends Component {
     renderSeekbar() {
         // custom change
         
-        const { height, width } = Dimensions.get('window');
-        const maxLength = height > width ? height : width;
         let circleSize = {
             borderRadius: 12,
             position: 'relative',
@@ -1000,7 +1005,7 @@ export default class VideoPlayer extends Component {
             width: 12,
         };
 
-        if (maxLength < 600 || maxLength > 900) {
+        if (this.screen.height < 600 || this.screen.height > 900) {
             circleSize = {
                 borderRadius: 24,
                 position: 'relative',
